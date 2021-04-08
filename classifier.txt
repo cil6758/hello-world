@@ -1,0 +1,30 @@
+qiime feature-classifier fit-classifier-naive-bayes \
+--i-reference-reads  \
+--i-reference-taxonomy  \
+
+qiime tools import \
+  --type 'FeatureData[Sequence]' \
+  --input-path rep_set/rep_set_16S_only/99/silva_132_99_16S.fna \
+  --output-path silva_99_repseq.qza
+  
+qiime tools import \
+  --type 'FeatureData[Taxonomy]' \
+  --source-format HeaderlessTSVTaxonomyFormat \
+  --input-path taxonomy/16S_only/99/taxonomy_all_levels.txt \
+  --output-path silva_99_all_taxa.qza
+  
+qiime feature-classifier extract-reads \
+  --i-sequences silva_99_repseq.qza \
+  --p-f-primer AGAGTTTGATCCTGGCTCAG \
+  --p-r-primer GGTTACCTTGTTACGACTT \
+  --p-trunc-len 1500 \
+  --o-reads silva_99_1500_refseqs.qza
+  
+qiime feature-classifier fit-classifier-naive-bayes \
+  --i-reference-reads silva_99_1500_refseqs.qza \
+  --i-reference-taxonomy silva_99_all_taxa.qza \
+  --o-classifier silva_99_1500_alltaxa.qza
+  
+  export TMPDIR="/home/cil6758/work1782/tmp/"
+  
+  export TMPDIR="/home/johnny/johnny/tmp/"
